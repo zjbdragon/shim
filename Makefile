@@ -318,9 +318,7 @@ endif
 	$(OBJCOPY) -j .text -j .sdata -j .data \
 		-j .dynamic -j .dynsym -j .rel* \
 		-j .rela* -j .reloc -j .eh_frame \
-		-j .debug_info -j .debug_abbrev -j .debug_aranges \
-		-j .debug_line -j .debug_str -j .debug_ranges \
-		-j .note.gnu.build-id \
+		-j .debug* -j .note.gnu.build-id \
 		$^ $@
 
 ifneq ($(origin ENABLE_SBSIGN),undefined)
