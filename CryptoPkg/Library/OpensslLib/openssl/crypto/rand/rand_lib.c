@@ -162,3 +162,15 @@ int RAND_status(void)
         return meth->status();
     return 0;
 }
+
+#ifdef OPENSSL_FIPS
+void RAND_set_fips_drbg_type(int type, int flags)
+{   /* just a stub for ABI compatibility */
+}
+
+int RAND_init_fips(void)
+{
+   /* just a stub for ABI compatibility */
+    return 1;
+}
+#endif

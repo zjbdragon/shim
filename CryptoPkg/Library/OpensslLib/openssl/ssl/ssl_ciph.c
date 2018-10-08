@@ -406,8 +406,10 @@ void ssl_load_ciphers(void)
         }
     }
     /* Make sure we can access MD5 and SHA1 */
-    OPENSSL_assert(ssl_digest_methods[SSL_MD_MD5_IDX] != NULL);
-    OPENSSL_assert(ssl_digest_methods[SSL_MD_SHA1_IDX] != NULL);
+    if (!FIPS_mode() && !OPENSSL_assert(ssl_digest_methods[SSL_MD_MD5_IDX] != NULL))
+        return 0;
+    if (!FIPS_mode() && OPENSSL_assert(ssl_digest_methods[SSL_MD_SHA1_IDX] != NULL))
+        return 0;
 
     disabled_mkey_mask = 0;
     disabled_auth_mask = 0;
@@ -689,7 +691,13 @@ static void ssl_cipher_collect_ciphers(const SSL_METHOD *ssl_method,
         /* drop those that use any of that is not available */
         if (c == NULL || !c->valid)
             continue;
-        if (FIPS_mode() && (c->algo_strength & SSL_FIPS))
+        /* WHAT THE ACTUAL HELL
+         * Tiano's OpenSSL 1.1.0h has:
+         * if (FIPS_mode() && (c->algo_strength & SSL_FIPS))
+         * RH's 1.1.1 has:
+         * if (FIPS_mode() && !(c->algo_strength & SSL_FIPS))
+         */
+        if (FIPS_mode() && !(c->algo_strength & SSL_FIPS))
             continue;
         if ((c->algorithm_mkey & disabled_mkey) ||
             (c->algorithm_auth & disabled_auth) ||
