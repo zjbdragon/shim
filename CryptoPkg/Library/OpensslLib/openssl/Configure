@@ -20,7 +20,7 @@ use OpenSSL::Glob;
 
 # see INSTALL for instructions.
 
-my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-egd] [sctp] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--config=FILE] os/compiler[:flags]\n";
+my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-egd] [sctp] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--system-ciphers-file=SYSTEMCIPHERFILE] [--with-xxx[=vvv]] [--config=FILE] os/compiler[:flags]\n";
 
 # Options:
 #
@@ -36,6 +36,9 @@ my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [-Dxxx] [-lx
 #               given with --prefix.
 #               This becomes the value of OPENSSLDIR in Makefile and in C.
 #               (Default: PREFIX/ssl)
+#
+# --system-ciphers-file  A file to read cipher string from when the PROFILE=SYSTEM
+#		cipher is specified (default).
 #
 # --cross-compile-prefix Add specified prefix to binutils components.
 #
@@ -298,6 +301,7 @@ $config{cross_compile_prefix}="";
 $config{fipslibdir}="/usr/local/ssl/fips-2.0/lib/";
 my $nofipscanistercheck=0;
 $config{baseaddr}="0xFB00000";
+$config{system_ciphers_file}="";
 my $auto_threads=1;    # enable threads automatically? true by default
 my $default_ranlib;
 $config{fips}=0;
@@ -697,6 +701,10 @@ while (@argvcopy)
 			{
 			$config{fipslibdir}="$1/";
 			}
+		elsif (/^--system-ciphers-file=(.*)$/)
+			{
+			$config{system_ciphers_file}=$1;
+			}
 		elsif (/^--with-baseaddr=(.*)$/)
 			{
 			$config{baseaddr}="$1";
@@ -829,6 +837,7 @@ if ($target eq "HASH") {
     exit 0;
 }
 
+chop $config{system_ciphers_file} if $config{system_ciphers_file} =~ /\/$/;
 # Backward compatibility?
 if ($target =~ m/^CygWin32(-.*)$/) {
     $target = "Cygwin".$1;

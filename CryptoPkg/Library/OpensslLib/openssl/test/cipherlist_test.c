@@ -190,7 +190,9 @@ int main(int argc, char **argv)
 {
     int result = 0;
 
+#ifndef SYSTEM_CIPHERS_FILE
     ADD_TEST(test_default_cipherlist_implicit);
+#endif
     ADD_TEST(test_default_cipherlist_explicit);
 
     result = run_tests(argv[0]);
