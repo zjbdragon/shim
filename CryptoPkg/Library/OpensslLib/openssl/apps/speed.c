@@ -518,62 +518,28 @@ static OPT_PAIR rsa_choices[] = {
     {NULL}
 };
 
-#define R_EC_P160    0
-#define R_EC_P192    1
-#define R_EC_P224    2
-#define R_EC_P256    3
-#define R_EC_P384    4
-#define R_EC_P521    5
-#define R_EC_K163    6
-#define R_EC_K233    7
-#define R_EC_K283    8
-#define R_EC_K409    9
-#define R_EC_K571    10
-#define R_EC_B163    11
-#define R_EC_B233    12
-#define R_EC_B283    13
-#define R_EC_B409    14
-#define R_EC_B571    15
-#define R_EC_X25519  16
+#define R_EC_P224    0
+#define R_EC_P256    1
+#define R_EC_P384    2
+#define R_EC_P521    3
+#define R_EC_X25519  4
+#define R_EC_X448    5
 #ifndef OPENSSL_NO_EC
 static OPT_PAIR ecdsa_choices[] = {
-    {"ecdsap160", R_EC_P160},
-    {"ecdsap192", R_EC_P192},
     {"ecdsap224", R_EC_P224},
     {"ecdsap256", R_EC_P256},
     {"ecdsap384", R_EC_P384},
     {"ecdsap521", R_EC_P521},
-    {"ecdsak163", R_EC_K163},
-    {"ecdsak233", R_EC_K233},
-    {"ecdsak283", R_EC_K283},
-    {"ecdsak409", R_EC_K409},
-    {"ecdsak571", R_EC_K571},
-    {"ecdsab163", R_EC_B163},
-    {"ecdsab233", R_EC_B233},
-    {"ecdsab283", R_EC_B283},
-    {"ecdsab409", R_EC_B409},
-    {"ecdsab571", R_EC_B571},
     {NULL}
 };
 
-static OPT_PAIR ecdh_choices[] = {
-    {"ecdhp160", R_EC_P160},
-    {"ecdhp192", R_EC_P192},
+static const OPT_PAIR ecdh_choices[] = {
     {"ecdhp224", R_EC_P224},
     {"ecdhp256", R_EC_P256},
     {"ecdhp384", R_EC_P384},
     {"ecdhp521", R_EC_P521},
-    {"ecdhk163", R_EC_K163},
-    {"ecdhk233", R_EC_K233},
-    {"ecdhk283", R_EC_K283},
-    {"ecdhk409", R_EC_K409},
-    {"ecdhk571", R_EC_K571},
-    {"ecdhb163", R_EC_B163},
-    {"ecdhb233", R_EC_B233},
-    {"ecdhb283", R_EC_B283},
-    {"ecdhb409", R_EC_B409},
-    {"ecdhb571", R_EC_B571},
     {"ecdhx25519", R_EC_X25519},
+    {"ecdhx448", R_EC_X448},
     {NULL}
 };
 #endif
@@ -1329,35 +1295,23 @@ int speed_main(int argc, char **argv)
      */
     static const unsigned int test_curves[EC_NUM] = {
         /* Prime Curves */
-        NID_secp160r1, NID_X9_62_prime192v1, NID_secp224r1,
+        NID_secp224r1,
         NID_X9_62_prime256v1, NID_secp384r1, NID_secp521r1,
-        /* Binary Curves */
-        NID_sect163k1, NID_sect233k1, NID_sect283k1,
-        NID_sect409k1, NID_sect571k1, NID_sect163r2,
-        NID_sect233r1, NID_sect283r1, NID_sect409r1,
-        NID_sect571r1,
         /* Other */
-        NID_X25519
+        NID_X25519, NID_X448
     };
     static const char *test_curves_names[EC_NUM] = {
         /* Prime Curves */
-        "secp160r1", "nistp192", "nistp224",
+        "secp160r1",
         "nistp256", "nistp384", "nistp521",
-        /* Binary Curves */
-        "nistk163", "nistk233", "nistk283",
-        "nistk409", "nistk571", "nistb163",
-        "nistb233", "nistb283", "nistb409",
-        "nistb571",
         /* Other */
-        "X25519"
+        "X25519", "X448"
     };
     static const int test_curves_bits[EC_NUM] = {
-        160, 192, 224,
+        160,
         256, 384, 521,
-        163, 233, 283,
-        409, 571, 163,
-        233, 283, 409,
-        571, 253 /* X25519 */
+        253 /* X25519 */,
+        448
     };
 
     int ecdsa_doit[EC_NUM] = { 0 };
@@ -1774,9 +1728,9 @@ int speed_main(int argc, char **argv)
 #  endif
 
 #  ifndef OPENSSL_NO_EC
-    ecdsa_c[R_EC_P160][0] = count / 1000;
-    ecdsa_c[R_EC_P160][1] = count / 1000 / 2;
-    for (i = R_EC_P192; i <= R_EC_P521; i++) {
+    ecdsa_c[R_EC_P224][0] = count / 1000;
+    ecdsa_c[R_EC_P224][1] = count / 1000 / 2;
+    for (i = R_EC_P256; i <= R_EC_P521; i++) {
         ecdsa_c[i][0] = ecdsa_c[i - 1][0] / 2;
         ecdsa_c[i][1] = ecdsa_c[i - 1][1] / 2;
         if (ecdsa_doit[i] <= 1 && ecdsa_c[i][0] == 0)
@@ -1788,6 +1742,7 @@ int speed_main(int argc, char **argv)
             }
         }
     }
+#if 0
     ecdsa_c[R_EC_K163][0] = count / 1000;
     ecdsa_c[R_EC_K163][1] = count / 1000 / 2;
     for (i = R_EC_K233; i <= R_EC_K571; i++) {
@@ -1816,9 +1771,9 @@ int speed_main(int argc, char **argv)
             }
         }
     }
-
-    ecdh_c[R_EC_P160][0] = count / 1000;
-    for (i = R_EC_P192; i <= R_EC_P521; i++) {
+#endif
+    ecdh_c[R_EC_P224][0] = count / 1000;
+    for (i = R_EC_P256; i <= R_EC_P521; i++) {
         ecdh_c[i][0] = ecdh_c[i - 1][0] / 2;
         if (ecdh_doit[i] <= 1 && ecdh_c[i][0] == 0)
             ecdh_doit[i] = 0;
@@ -1828,6 +1783,7 @@ int speed_main(int argc, char **argv)
             }
         }
     }
+#if 0
     ecdh_c[R_EC_K163][0] = count / 1000;
     for (i = R_EC_K233; i <= R_EC_K571; i++) {
         ecdh_c[i][0] = ecdh_c[i - 1][0] / 2;
@@ -1850,6 +1806,7 @@ int speed_main(int argc, char **argv)
             }
         }
     }
+#endif
 #  endif
 
 # else
