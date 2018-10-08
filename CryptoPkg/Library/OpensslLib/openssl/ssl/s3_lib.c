@@ -2425,7 +2425,7 @@ static SSL_CIPHER ssl3_ciphers[] = {
      SSL_GOST89MAC,
      TLS1_VERSION, TLS1_2_VERSION,
      0, 0,
-     SSL_HIGH,
+     SSL_MEDIUM,
      SSL_HANDSHAKE_MAC_GOST94 | TLS1_PRF_GOST94 | TLS1_STREAM_MAC,
      256,
      256,
@@ -2455,7 +2455,7 @@ static SSL_CIPHER ssl3_ciphers[] = {
      SSL_GOST89MAC12,
      TLS1_VERSION, TLS1_2_VERSION,
      0, 0,
-     SSL_HIGH,
+     SSL_MEDIUM,
      SSL_HANDSHAKE_MAC_GOST12_256 | TLS1_PRF_GOST12_256 | TLS1_STREAM_MAC,
      256,
      256,
@@ -2558,7 +2558,7 @@ static SSL_CIPHER ssl3_ciphers[] = {
      },
 #endif                          /* OPENSSL_NO_SEED */
 
-#ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
+#if 0 /* No MD5 ciphersuites */
     {
      1,
      SSL3_TXT_RSA_RC4_128_MD5,
@@ -2574,6 +2574,8 @@ static SSL_CIPHER ssl3_ciphers[] = {
      128,
      128,
      },
+#endif
+#ifndef OPENSSL_NO_WEAK_SSL_CIPHERS
     {
      1,
      SSL3_TXT_RSA_RC4_128_SHA,
@@ -2589,6 +2591,8 @@ static SSL_CIPHER ssl3_ciphers[] = {
      128,
      128,
      },
+#endif
+#if 0
     {
      1,
      SSL3_TXT_ADH_RC4_128_MD5,
@@ -2604,7 +2608,7 @@ static SSL_CIPHER ssl3_ciphers[] = {
      128,
      128,
      },
-
+#endif
 # ifndef OPENSSL_NO_EC
     {
      1,
