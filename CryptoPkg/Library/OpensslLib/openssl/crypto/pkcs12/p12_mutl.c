@@ -7,6 +7,8 @@
  * https://www.openssl.org/source/license.html
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 # include <stdio.h>
 # include "internal/cryptlib.h"
 # include <openssl/crypto.h>
@@ -111,7 +113,7 @@ static int pkcs12_gen_mac(PKCS12 *p12, const char *pass, int passlen,
     if ((md_type_nid == NID_id_GostR3411_94
          || md_type_nid == NID_id_GostR3411_2012_256
          || md_type_nid == NID_id_GostR3411_2012_512)
-        && !getenv("LEGACY_GOST_PKCS12")) {
+        && !secure_getenv("LEGACY_GOST_PKCS12")) {
         md_size = TK26_MAC_KEY_LEN;
         if (!pkcs12_gen_gost_mac_key(pass, passlen, salt, saltlen, iter,
                                      md_size, key, md_type)) {

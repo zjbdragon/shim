@@ -7,6 +7,8 @@
  * https://www.openssl.org/source/license.html
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -185,7 +187,7 @@ void OPENSSL_cpuid_setup(void)
         return;
     trigger = 1;
 
-    if ((e = getenv("OPENSSL_ppccap"))) {
+    if ((e = secure_getenv("OPENSSL_ppccap"))) {
         OPENSSL_ppccap_P = strtoul(e, NULL, 0);
         return;
     }

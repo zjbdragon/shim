@@ -13,6 +13,8 @@
  * SUN MICROSYSTEMS, INC., and contributed to the OpenSSL project.
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include "internal/cryptlib_int.h"
 #include <openssl/safestack.h>
 
@@ -37,7 +39,7 @@ void OPENSSL_cpuid_setup(void)
         return;
 
     trigger = 1;
-    if ((env = getenv("OPENSSL_ia32cap"))) {
+    if ((env = secure_getenv("OPENSSL_ia32cap"))) {
         int off = (env[0] == '~') ? 1 : 0;
 #  if defined(_WIN32)
         if (!sscanf(env + off, "%I64i", &vec))

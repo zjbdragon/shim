@@ -7,6 +7,8 @@
  * https://www.openssl.org/source/license.html
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include "internal/cryptlib.h"
 
 #include <errno.h>
@@ -317,10 +319,10 @@ const char *RAND_file_name(char *buf, size_t size)
     if (OPENSSL_issetugid() != 0) {
         use_randfile = 0;
     } else {
-        s = getenv("RANDFILE");
+        s = secure_getenv("RANDFILE");
         if (s == NULL || *s == '\0') {
             use_randfile = 0;
-            s = getenv("HOME");
+            s = secure_getenv("HOME");
         }
     }
 #endif

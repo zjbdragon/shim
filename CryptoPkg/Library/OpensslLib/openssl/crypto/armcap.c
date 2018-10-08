@@ -7,6 +7,8 @@
  * https://www.openssl.org/source/license.html
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -106,7 +108,7 @@ void OPENSSL_cpuid_setup(void)
         return;
     trigger = 1;
 
-    if ((e = getenv("OPENSSL_armcap"))) {
+    if ((e = secure_getenv("OPENSSL_armcap"))) {
         OPENSSL_armcap_P = (unsigned int)strtoul(e, NULL, 0);
         return;
     }

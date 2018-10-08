@@ -7,6 +7,8 @@
  * https://www.openssl.org/source/license.html
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <time.h>
 #include <errno.h>
@@ -78,7 +80,8 @@ static int dir_ctrl(X509_LOOKUP *ctx, int cmd, const char *argp, long argl,
     switch (cmd) {
     case X509_L_ADD_DIR:
         if (argl == X509_FILETYPE_DEFAULT) {
-            dir = (char *)getenv(X509_get_default_cert_dir_env());
+            const char *dir = secure_getenv(X509_get_default_cert_dir_env());
+
             if (dir)
                 ret = add_cert_dir(ld, dir, X509_FILETYPE_PEM);
             else

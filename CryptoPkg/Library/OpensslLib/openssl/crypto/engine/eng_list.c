@@ -13,6 +13,8 @@
  * SUN MICROSYSTEMS, INC., and contributed to the OpenSSL project.
  */
 
+/* for secure_getenv */
+#define _GNU_SOURCE
 #include "eng_int.h"
 
 /*
@@ -322,7 +324,7 @@ ENGINE *ENGINE_by_id(const char *id)
      * Prevent infinite recursion if we're looking for the dynamic engine.
      */
     if (strcmp(id, "dynamic")) {
-        if ((load_dir = getenv("OPENSSL_ENGINES")) == 0)
+        if ((load_dir = secure_getenv("OPENSSL_ENGINES")) == 0)
             load_dir = ENGINESDIR;
         iterator = ENGINE_by_id("dynamic");
         if (!iterator || !ENGINE_ctrl_cmd_string(iterator, "ID", id, 0) ||
