@@ -16,23 +16,28 @@
 # include <openssl/rand.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+#ifndef OPENSSL_SYS_UEFI
 # include <fcntl.h>
 # include <unistd.h>
 # include <errno.h>
 # include <stdlib.h>
+#endif
 # include "internal/fips_int.h"
 
 # define FIPS_MODE_SWITCH_FILE "/proc/sys/crypto/fips_enabled"
 
 static void init_fips_mode(void)
 {
+#ifndef OPENSSL_SYS_UEFI
     char buf[2] = "0";
     int fd;
+#endif
 
     /* Ensure the selftests always run */
     /* XXX: TO SOLVE - premature initialization due to selftests */
     FIPS_mode_set(1);
 
+#ifndef OPENSSL_SYS_UEFI
     if (secure_getenv("OPENSSL_FORCE_FIPS_MODE") != NULL) {
         buf[0] = '1';
     } else if ((fd = open(FIPS_MODE_SWITCH_FILE, O_RDONLY)) >= 0) {
@@ -47,7 +52,9 @@ static void init_fips_mode(void)
     if (buf[0] != '1') {
         /* drop down to non-FIPS mode if it is not requested */
         FIPS_mode_set(0);
-    } else {
+    } else
+#endif
+    {
         /* abort if selftest failed */
         FIPS_selftest_check();
     }
@@ -82,9 +89,6 @@ void OPENSSL_init(void)
         return;
     done = 1;
 #ifdef OPENSSL_FIPS
-    FIPS_set_locking_callbacks(CRYPTO_lock, CRYPTO_add_lock);
-    FIPS_set_error_callbacks(ERR_put_error, ERR_add_error_vdata);
-    FIPS_set_malloc_callbacks(CRYPTO_malloc, CRYPTO_free);
     RAND_init_fips();
 #endif
 }

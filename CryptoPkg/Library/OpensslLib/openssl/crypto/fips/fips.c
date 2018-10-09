@@ -57,11 +57,13 @@
 #include <openssl/rsa.h>
 #include <string.h>
 #include <limits.h>
+#ifndef OPENSSL_NO_DSO
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#endif
 #include "fips_locl.h"
 
 #ifdef OPENSSL_FIPS
@@ -149,7 +151,7 @@ int FIPS_selftest_failed(void)
 void FIPS_selftest_check(void)
 {
     if (fips_selftest_fail) {
-        OpenSSLDie(__FILE__, __LINE__, "FATAL FIPS SELFTEST FAILURE");
+        OPENSSL_die("FATAL FIPS SELFTEST FAILURE", __FILE__, __LINE__);
     }
 }
 
@@ -160,6 +162,7 @@ void fips_set_selftest_fail(void)
 
 /* we implement what libfipscheck does ourselves */
 
+#ifndef OPENSSL_NO_DSO
 static int
 get_library_path(const char *libname, const char *symbolname, char *path,
                  size_t pathlen)
@@ -361,9 +364,11 @@ static int FIPSCHECK_verify(const char *path)
     /* check successful */
     return 1;
 }
+#endif
 
 static int verify_checksums(void)
 {
+#ifndef OPENSSL_NO_DSO
     int rv;
     char path[PATH_MAX + 1];
     char *p;
@@ -389,6 +394,7 @@ static int verify_checksums(void)
     rv = FIPSCHECK_verify(path);
     if (!rv)
         return 0;
+#endif
     return 1;
 }
 
@@ -398,6 +404,7 @@ static int verify_checksums(void)
 
 int FIPS_module_installed(void)
 {
+#ifndef OPENSSL_NO_DSO
     int rv;
     rv = access(FIPS_MODULE_PATH, F_OK);
     if (rv < 0 && errno != ENOENT)
@@ -405,6 +412,9 @@ int FIPS_module_installed(void)
 
     /* Installed == true */
     return !rv;
+#else
+    return 1;
+#endif
 }
 
 int FIPS_module_mode_set(int onoff)
@@ -412,7 +422,7 @@ int FIPS_module_mode_set(int onoff)
     int ret = 0;
 
     if (!RUN_ONCE(&fips_lock_init, do_fips_lock_init))
-        return NULL;
+        return 0;
 
     fips_w_lock();
     fips_started = 1;

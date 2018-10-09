@@ -59,14 +59,6 @@ void openssl_add_all_digests_int(void)
         EVP_add_digest(EVP_sha256());
         EVP_add_digest(EVP_sha384());
         EVP_add_digest(EVP_sha512());
-        EVP_add_digest(EVP_sha512_224());
-        EVP_add_digest(EVP_sha512_256());
-        EVP_add_digest(EVP_sha3_224());
-        EVP_add_digest(EVP_sha3_256());
-        EVP_add_digest(EVP_sha3_384());
-        EVP_add_digest(EVP_sha3_512());
-        EVP_add_digest(EVP_shake128());
-        EVP_add_digest(EVP_shake256());
     }
 #endif
 }

@@ -43,9 +43,6 @@
 int err_load_crypto_strings_int(void)
 {
     if (
-#ifdef OPENSSL_FIPS
-        FIPS_set_error_callbacks(ERR_put_error, ERR_add_error_vdata) == 0 ||
-#endif
 #ifndef OPENSSL_NO_ERR
         ERR_load_ERR_strings() == 0 ||    /* include error strings for SYSerr */
         ERR_load_BN_strings() == 0 ||

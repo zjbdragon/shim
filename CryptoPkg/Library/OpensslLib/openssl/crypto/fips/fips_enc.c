@@ -152,6 +152,7 @@ const EVP_CIPHER *FIPS_get_cipherbynid(int nid)
     case NID_aes_256_xts:
         return EVP_aes_256_xts();
 
+#if !defined(OPENSSL_NO_DES)
     case NID_des_ede_ecb:
         return EVP_des_ede();
 
@@ -181,6 +182,7 @@ const EVP_CIPHER *FIPS_get_cipherbynid(int nid)
 
     case NID_des_ede_ofb64:
         return EVP_des_ede_ofb();
+#endif
 
     default:
         return NULL;
