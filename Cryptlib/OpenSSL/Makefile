@@ -259,6 +259,28 @@ OBJS		= crypto/bio/b_print.o \
 		  crypto/evp/pmeth_lib.o \
 		  crypto/evp/scrypt.o \
 		  crypto/ex_data.o \
+		  crypto/fips/fips.o \
+		  crypto/fips/fips_aes_selftest.o \
+		  crypto/fips/fips_cmac_selftest.o \
+		  crypto/fips/fips_des_selftest.o \
+		  crypto/fips/fips_dh_selftest.o \
+		  crypto/fips/fips_drbg_ctr.o \
+		  crypto/fips/fips_drbg_hash.o \
+		  crypto/fips/fips_drbg_hmac.o \
+		  crypto/fips/fips_drbg_lib.o \
+		  crypto/fips/fips_drbg_rand.o \
+		  crypto/fips/fips_drbg_selftest.o \
+		  crypto/fips/fips_dsa_selftest.o \
+		  crypto/fips/fips_ecdh_selftest.o \
+		  crypto/fips/fips_ecdsa_selftest.o \
+		  crypto/fips/fips_enc.o \
+		  crypto/fips/fips_ers.o \
+		  crypto/fips/fips_hmac_selftest.o \
+		  crypto/fips/fips_md.o \
+		  crypto/fips/fips_post.o \
+		  crypto/fips/fips_rand_lib.o \
+		  crypto/fips/fips_rsa_selftest.o \
+		  crypto/fips/fips_sha_selftest.o \
 		  crypto/hmac/hm_ameth.o \
 		  crypto/hmac/hm_pmeth.o \
 		  crypto/hmac/hmac.o \
