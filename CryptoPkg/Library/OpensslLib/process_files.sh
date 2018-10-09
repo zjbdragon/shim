@@ -22,7 +22,7 @@ if ! cd "${OPENSSL_PATH}" ; then
     exit 1
 fi
 
-#       no-engines \
+#	no-engines \
 #	no-fp-api \
 #	no-jpake \
 #	no-krb5 \
@@ -33,28 +33,44 @@ fi
 #	no-sha0 \
 
 ./Configure UEFI \
+	no-afalgeng \
 	no-asm \
+	no-async \
+	no-autoalginit \
+	no-autoerrinit \
 	no-bf \
+	no-blake2 \
 	no-camellia \
 	no-capieng \
 	no-cast \
+	no-chacha \
 	no-cms \
+	no-ct \
 	no-deprecated \
+	no-des \
 	no-dgram \
 	no-dsa \
 	no-dynamic-engine \
 	no-ec \
+	no-ec2m \
 	no-ecdh \
 	no-ecdsa \
 	no-engine \
 	no-err \
 	no-filenames \
+	fips \
+	no-gost \
 	no-hw \
 	no-idea \
+	no-md4 \
 	no-mdc2 \
+	no-ocb \
+	no-pic \
+	no-poly1305 \
 	no-posix-io \
 	no-rc2 \
 	no-rfc3779 \
+	no-rmd160 \
 	no-scrypt \
 	no-seed \
 	no-sock \
@@ -67,7 +83,7 @@ fi
 	no-whirlpool \
     || exit 1
 
-make files
+make build_generated
 cd -
 
 function filelist ()
