@@ -1,0 +1,2 @@
+[Defines]
+	OPENSSL_PATH = openssl

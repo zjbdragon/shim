@@ -850,17 +850,32 @@ foreach (sort (keys %disabled))
 	printf "    no-%-12s %-10s", $_, "[$disabled{$_}]";
 
 	if (/^dso$/)
-		{ }
+		{
+		push @{$config{openssl_other_defines}}, "OPENSSL_NO_DSO";
+		print " OPENSSL_NO_DSO (no dlopen)"
+		}
 	elsif (/^threads$/)
-		{ }
+		{
+		push @{$config{openssl_other_defines}}, "OPENSSL_NO_THREADS";
+		print " OPENSSL_NO_THREADS (no threading)"
+		}
 	elsif (/^shared$/)
-		{ }
+		{
+		push @{$config{openssl_other_defines}}, "OPENSSL_NO_SHARED";
+		print " OPENSSL_NO_SHARED (no shared library)"
+		}
 	elsif (/^pic$/)
-		{ }
+		{
+		push @{$config{openssl_other_defines}}, "OPENSSL_NO_PIC";
+		print " OPENSSL_NO_PIC (no PIC)"
+		}
 	elsif (/^zlib$/)
 		{ }
 	elsif (/^dynamic-engine$/)
-		{ }
+		{
+		push @{$config{openssl_other_defines}}, "OPENSSL_NO_DYNAMIC_ENGINE";
+		print " OPENSSL_NO_DYNAMIC_ENGINE (skip dynamic engines)"
+		}
 	elsif (/^makedepend$/)
 		{ }
 	elsif (/^zlib-dynamic$/)

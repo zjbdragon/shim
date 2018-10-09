@@ -33,6 +33,7 @@ fi
 #	no-sha0 \
 
 ./Configure UEFI \
+        -static \
 	no-afalgeng \
 	no-asm \
 	no-async \
@@ -50,14 +51,13 @@ fi
 	no-des \
 	no-dgram \
 	no-dsa \
+	no-dso \
 	no-dynamic-engine \
 	no-ec \
 	no-ec2m \
 	no-ecdh \
 	no-ecdsa \
 	no-engine \
-	no-err \
-	no-filenames \
 	fips \
 	no-gost \
 	no-hw \

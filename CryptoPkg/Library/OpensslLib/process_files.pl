@@ -34,7 +34,7 @@ BEGIN {
         die "Cannot close \"" . $inf_file . "\"!";
 
     foreach (@inf) {
-        if (/DEFINE\s+OPENSSL_PATH\s*=\s*([a-z]+)/) {
+        if (/\s+OPENSSL_PATH\s*=\s*([a-z]+)/) {
 
             # We need to run Configure before we can include its result...
             $OPENSSL_PATH = $1;
@@ -48,6 +48,7 @@ BEGIN {
             system(
                 "./Configure",
                 "UEFI",
+		"-static",
                 "no-afalgeng",
                 "no-asm",
                 "no-async",
@@ -65,14 +66,13 @@ BEGIN {
                 "no-des",
                 "no-dgram",
                 "no-dsa",
+                "no-dso",
                 "no-dynamic-engine",
                 "no-ec",
                 "no-ec2m",
                 "no-ecdh",
                 "no-ecdsa",
                 "no-engine",
-                "no-err",
-                "no-filenames",
                 "fips",
                 "no-gost",
                 "no-hw",
