@@ -1,3 +1,11 @@
+THIS IS A FORK OF RED HAT SHIM. YOU SHOULD VISIT THE ORIGINAL AT
+(https://github.com/rhboot/shim)[https://github.com/rhboot/shim]
+
+I plan to do some TPM-related experiments here. Intel TXT's TPM policies
+don't work with UEFI Secure Boot. Maybe Shim can replace TXT.
+
+---------------------------------------------------------------------
+
 shim is a trivial EFI application that, when run, attempts to open and
 execute another application. It will initially attempt to do this via the
 standard EFI LoadImage() and StartImage() calls. If these fail (because secure
