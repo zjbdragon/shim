@@ -1,5 +1,5 @@
 THIS IS A FORK OF RED HAT SHIM. YOU SHOULD VISIT THE ORIGINAL AT
-(https://github.com/rhboot/shim)[https://github.com/rhboot/shim]
+[https://github.com/rhboot/shim](https://github.com/rhboot/shim)
 
 I plan to do some TPM-related experiments here. Intel TXT's TPM policies
 don't work with UEFI Secure Boot. Maybe Shim can replace TXT.
